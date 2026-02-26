@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensor Calibration Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Sensor Calibration Tool</h1>
+            <p class="subtitle">Linear regression-based sensor calibration with real-time conversion</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Data Entry Section -->
+            <section class="card" id="data-section">
+                <div class="card-header">
+                    <h2>Calibration Data Points</h2>
+                    <span class="info-badge" title="Enter at least 2 data points for calibration">ℹ️</span>
+                </div>
+                
+                <div class="table-controls">
+                    <button id="add-row-btn" class="btn btn-primary">
+                        <span class="btn-icon">+</span> Add Row
+                    </button>
+                    <button id="clear-all-btn" class="btn btn-secondary">
+                        <span class="btn-icon">🗑️</span> Clear All
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table id="data-table">
+                        <thead>
+                            <tr>
+                                <th>Reference Value<br><span class="th-subtitle">(Real-world measurement)</span></th>
+                                <th>Raw Reading<br><span class="th-subtitle">(Sensor output)</span></th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            <!-- Rows will be added dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="help-text">
+                    💡 <strong>Tip:</strong> Enter reference values (like temperature in °C) and their corresponding raw sensor readings (like ADC values).
+                </div>
+            </section>
+
+            <!-- Calibration Results Section -->
+            <section class="card" id="calibration-section">
+                <div class="card-header">
+                    <h2>Calibration Results</h2>
+                </div>
+
+                <button id="compute-btn" class="btn btn-compute">
+                    <span class="btn-icon">⚡</span> Compute Calibration
+                </button>
+
+                <div class="results-grid">
+                    <div class="result-item">
+                        <label>Slope (m)</label>
+                        <input type="text" id="slope-display" readonly placeholder="Not computed">
+                        <span class="result-description">Rate of change</span>
+                    </div>
+                    <div class="result-item">
+                        <label>Offset (b)</label>
+                        <input type="text" id="offset-display" readonly placeholder="Not computed">
+                        <span class="result-description">Y-intercept</span>
+                    </div>
+                </div>
+
+                <div id="formula-display" class="formula-display" style="display: none;">
+                    <strong>Calibration Formula:</strong>
+                    <div class="formula-text" id="formula-text"></div>
+                </div>
+
+                <!-- File Operations -->
+                <div class="file-operations">
+                    <button id="save-btn" class="btn btn-secondary" disabled>
+                        <span class="btn-icon">💾</span> Save Calibration
+                    </button>
+                    <button id="load-btn" class="btn btn-secondary">
+                        <span class="btn-icon">📂</span> Load Calibration
+                    </button>
+                    <input type="file" id="file-input" accept=".txt,.json" style="display: none;">
+                </div>
+            </section>
+
+            <!-- Conversion Section -->
+            <section class="card" id="conversion-section">
+                <div class="card-header">
+                    <h2>Convert Raw Reading</h2>
+                </div>
+
+                <div class="conversion-container">
+                    <div class="input-group">
+                        <label for="raw-input">Raw Sensor Reading</label>
+                        <input type="number" id="raw-input" placeholder="Enter raw value..." step="any">
+                    </div>
+
+                    <button id="convert-btn" class="btn btn-convert" disabled>
+                        <span class="btn-icon">🔄</span> Convert
+                    </button>
+
+                    <div class="input-group">
+                        <label for="result-output">Real-World Value</label>
+                        <input type="text" id="result-output" readonly placeholder="Result will appear here">
+                    </div>
+                </div>
+
+                <div id="conversion-history" class="conversion-history" style="display: none;">
+                    <h3>Recent Conversions</h3>
+                    <div id="history-list"></div>
+                </div>
+            </section>
+
+            <!-- Statistics Section (Optional) -->
+            <section class="card statistics-card" id="stats-section" style="display: none;">
+                <div class="card-header">
+                    <h2>Calibration Statistics</h2>
+                </div>
+                <div class="stats-grid" id="stats-content">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Sensor Calibration Tool v2.0 | Linear Regression Algorithm</p>
+            <p class="footer-links">
+                <a href="https://github.com/yourusername/sensor-calibration-tool" target="_blank">GitHub</a> |
+                <a href="#" id="about-link">About</a> |
+                <a href="#" id="help-link">Help</a>
+            </p>
+        </footer>
+    </div>
+
+    <!-- Modal for About/Help -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
